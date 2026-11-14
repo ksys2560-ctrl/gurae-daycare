@@ -27,8 +27,10 @@ const SITE = {
   chatbot: {
     link: "https://gemini.google.com/gem/5042958c38c9?usp=sharing",   // 없으면 "" → 단추 숨김
     label: "양육상담 챗봇",                 // 캐릭터 옆 말풍선 글자
-    character: "images/character.webp",    // 오른쪽 아래 떠 있는 캐릭터 그림
+    character: "images/kids.webp",         // 오른쪽 아래 떠 있는 캐릭터 그림 (구래 친구들)
+    aboutPhotoLink: true,                  // '어린이집 소개' 캐릭터 그림을 눌러도 챗봇이 열림
   },
+  hearts: true,                            // 마우스를 움직이면 작은 분홍 하트가 따라다님 (끄려면 false)
 
   /* ---------- 맨 위 큰 사진 ---------- */
   hero: {

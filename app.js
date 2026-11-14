@@ -40,7 +40,7 @@ if (S.about.show) sections.push({
   html: `<section class="block" id="about"><div class="wrap">
     ${head("🏡", S.about.title)}
     <div class="about">
-      <div class="about-photo reveal">${S.chatbot && S.chatbot.link && S.about.photo === S.chatbot.character
+      <div class="about-photo reveal">${S.chatbot && S.chatbot.link && S.chatbot.aboutPhotoLink
         ? `<a class="chat-photo" href="${esc(S.chatbot.link)}" target="_blank" rel="noopener" title="${esc(S.chatbot.label)} 열기"><img src="${esc(S.about.photo)}" alt="${esc(S.chatbot.label)} 열기"><span class="chat-hint">💬 캐릭터를 누르면 ${esc(S.chatbot.label)}이 열려요</span></a>`
         : `<img src="${esc(S.about.photo)}" alt="">`}</div>
       <div class="reveal">
@@ -162,7 +162,31 @@ if (S.chatbot && S.chatbot.link) {
   fab.rel = "noopener";
   fab.setAttribute("aria-label", `${S.chatbot.label} 열기`);
   fab.innerHTML = `<span class="chat-bubble">💬 ${esc(S.chatbot.label)}</span><span class="chat-char"><img src="${esc(S.chatbot.character)}" alt=""></span>`;
+  // 캐릭터 그림 파일이 없으면 로고 캐릭터로 대신 보여 줌
+  fab.querySelector("img").addEventListener("error", (e) => {
+    if (S.logo && !e.target.src.endsWith(S.logo)) { e.target.src = S.logo; fab.classList.add("fallback"); }
+  });
   document.body.appendChild(fab);
+}
+
+/* 마우스를 따라다니는 작은 분홍 하트 (마우스일 때만, 움직임 줄이기 설정이면 끔) */
+if (S.hearts && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  let lastHeart = 0;
+  window.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const now = performance.now();
+    if (now - lastHeart < 45) return;
+    lastHeart = now;
+    const h = document.createElement("span");
+    h.className = "heart";
+    h.textContent = "♥";
+    h.style.left = e.clientX + "px";
+    h.style.top = e.clientY + "px";
+    h.style.fontSize = 10 + Math.random() * 8 + "px";
+    h.style.setProperty("--dx", (Math.random() * 30 - 15).toFixed(0) + "px");
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 950);
+  }, { passive: true });
 }
 
 /* ---------- 움직임 ---------- */
