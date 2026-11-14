@@ -64,11 +64,19 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .chat-fab:hover .chat-char { animation: none; transform: scale(1.08); }
 @keyframes chatBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 @media (max-width: 600px) {
-  /* 휴대폰: 글을 가리지 않도록 아래쪽에, 전보다 크게 */
-  .chat-fab { right: 12px; top: auto; bottom: 16px; transform: none; gap: 6px; }
-  .chat-char { width: 132px; height: 90px; border-radius: 30px; }
+  /* 휴대폰: 글을 덜 가리도록 오른쪽 아래에 작고 단정하게 */
+  .chat-fab { right: 10px; top: auto; bottom: 12px; transform: none; gap: 4px; }
+  .chat-char { width: 88px; height: 60px; border-radius: 22px; border-width: 2px; }
   .chat-fab.fallback .chat-char { width: 56px; height: 56px; }
-  .chat-bubble { font-size: 15px; padding: 7px 14px; }
+  .chat-bubble { font-size: 12px; padding: 4px 10px; }
+  /* 맨 아래 글이 챗봇 단추에 가리지 않도록 여유 */
+  footer { padding-bottom: 110px; }
+  /* 입학 안내 카드: 휴대폰에서 여백 줄이고, 이름표를 글 위로 */
+  .e-card { padding: 22px 18px; }
+  .e-recruit h4 { font-size: 22px; }
+  .recruit div { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .recruit div:last-child { border-bottom: 0; }
+  .r-tag { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .chat-char { animation: none; } }
 .brand-name { line-height: 1.2; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.35); transition: color .3s; }
@@ -188,7 +196,7 @@ section.block:nth-of-type(even) .r-dot { border-color: var(--bg-alt); }
 .e-recruit h4 { color: #e0664f; font-size: 26px; }
 .recruit div { display: flex; align-items: center; gap: 14px; padding: 9px 0; }
 .r-tag { flex: none; min-width: 84px; text-align: center; background: var(--main-soft); color: var(--main); padding: 5px 14px; border-radius: 99px; font-weight: 700; font-size: 15px; }
-.recruit b { word-break: break-all; }
+.recruit b { word-break: keep-all; overflow-wrap: anywhere; }
 .hours div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--line); }
 .hours div:last-child { border: 0; }
 .hours span { color: var(--text-soft); }
