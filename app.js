@@ -57,8 +57,8 @@ if (S.edu.show) sections.push({
     ${head("🌳", S.edu.title)}
     <p class="quote reveal">${esc(S.edu.quote)}</p>
     <p class="edu-text reveal">${esc(S.edu.text)}</p>
-    <div class="programs">${S.edu.programs.map((p) => `<div class="prog reveal">
-      <div class="prog-img">${p.photo ? `<img src="${esc(p.photo)}" alt="">` : esc(p.icon)}</div>
+    <div class="programs">${S.edu.programs.map((p, i) => `<div class="prog reveal">
+      <div class="prog-img${p.photo ? " zoomable" : ""}" data-i="${i}">${p.photo ? `<img src="${esc(p.photo)}" alt="">` : esc(p.icon)}${p.more && p.more.length ? `<span class="prog-count">📷 ${p.more.length + 1}</span>` : ""}</div>
       <div class="prog-body"><h4>${esc(p.icon)} ${esc(p.name)}</h4><p>${esc(p.text)}</p></div>
     </div>`).join("")}</div>
   </div></section>`,
@@ -169,11 +169,36 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
+/* 사진 크게 보기 — 사진이 여러 장이면 ‹ › 단추, 키보드 ← →, 휴대폰 밀기로 넘겨 봄 */
 const lb = document.getElementById("lightbox");
-document.querySelectorAll(".story").forEach((el) => el.addEventListener("click", () => {
-  lb.querySelector("img").src = el.dataset.src;
-  lb.querySelector("p").textContent = el.dataset.text;
-  lb.classList.add("open");
+let lbList = [], lbIdx = 0, lbText = "";
+const lbShow = () => {
+  lb.querySelector("img").src = lbList[lbIdx];
+  lb.querySelector("p").textContent = lbText + (lbList.length > 1 ? `  (${lbIdx + 1} / ${lbList.length})` : "");
+  lb.classList.toggle("multi", lbList.length > 1);
+};
+const lbOpen = (list, text) => { lbList = list; lbIdx = 0; lbText = text; lbShow(); lb.classList.add("open"); };
+const lbMove = (d) => { if (lbList.length > 1) { lbIdx = (lbIdx + d + lbList.length) % lbList.length; lbShow(); } };
+
+document.querySelectorAll(".story").forEach((el) => el.addEventListener("click", () => lbOpen([el.dataset.src], el.dataset.text)));
+document.querySelectorAll(".prog-img.zoomable").forEach((el) => el.addEventListener("click", () => {
+  const p = S.edu.programs[el.dataset.i];
+  lbOpen([p.photo, ...(p.more || [])], `${p.icon} ${p.name}`);
 }));
+lb.querySelector(".lb-prev").addEventListener("click", (e) => { e.stopPropagation(); lbMove(-1); });
+lb.querySelector(".lb-next").addEventListener("click", (e) => { e.stopPropagation(); lbMove(1); });
 lb.addEventListener("click", () => lb.classList.remove("open"));
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("open"); });
+document.addEventListener("keydown", (e) => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") lb.classList.remove("open");
+  if (e.key === "ArrowLeft") lbMove(-1);
+  if (e.key === "ArrowRight") lbMove(1);
+});
+let touchX = null;
+lb.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", (e) => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  touchX = null;
+  if (Math.abs(dx) > 40) { e.preventDefault(); lbMove(dx < 0 ? 1 : -1); }
+});

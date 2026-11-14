@@ -74,8 +74,10 @@ const SITE = {
     quote: "놀이는 아이의 본능이고, 아이들은 놀이하며 배우고 자랍니다.",
     text: "영유아·놀이중심의 표준보육과정을 바탕으로, 아이의 흥미와 관심에서 출발한 놀이 속에서 자연스럽게 배움이 일어나도록 하루를 꾸립니다.",
     // photo 를 "" 로 비우면 그림 없이 아이콘만 크게 나옵니다
+    // more: [...] 에 사진을 더 넣으면, 카드 사진을 눌렀을 때 넘겨 보며 볼 수 있습니다
     programs: [
-      { icon: "🖐️", name: "오감놀이", text: "오감 발달과 정서적 안정, 사회성을 키우는 감각놀이", photo: "images/edu-senses.webp" },
+      { icon: "🖐️", name: "오감놀이", text: "오감 발달과 정서적 안정, 사회성을 키우는 감각놀이", photo: "images/edu-senses.webp",
+        more: ["images/edu-senses2.webp"] },
       { icon: "🌲", name: "숲놀이", text: "자연을 관찰하고 자연물로 놀이하며 생태 감수성을 깨워요", photo: "images/edu-forest.webp" },
       { icon: "📖", name: "북적북적(book) 발표회", text: "그림책 속 이야기를 몸으로 표현하고 무대에서 함께 발표해요", photo: "images/edu-book.webp" },
       { icon: "🏫", name: "이음교육", text: "신곡초등학교 선생님과 함께 초등학교로 가는 첫걸음을 준비해요", photo: "images/edu-ieum.webp" },
