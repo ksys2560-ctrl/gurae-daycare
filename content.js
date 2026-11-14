@@ -23,6 +23,13 @@ const SITE = {
   addressDetail: "한가람마을 2단지",          // 주소 뒤에 덧붙여 보이는 글 (없으면 "")
   description: "오늘의 놀이가 내일의 성장이 되는 곳, 시립구래어린이집입니다.", // 카톡·검색에 보이는 소개
 
+  /* ---------- 양육상담 챗봇 (구래 캐릭터를 누르면 열림) ---------- */
+  chatbot: {
+    link: "https://gemini.google.com/gem/5042958c38c9?usp=sharing",   // 없으면 "" → 단추 숨김
+    label: "양육상담 챗봇",                 // 캐릭터 옆 말풍선 글자
+    character: "images/character.webp",    // 오른쪽 아래 떠 있는 캐릭터 그림
+  },
+
   /* ---------- 맨 위 큰 사진 ---------- */
   hero: {
     photo: "images/main.webp",

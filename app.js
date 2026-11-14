@@ -40,7 +40,9 @@ if (S.about.show) sections.push({
   html: `<section class="block" id="about"><div class="wrap">
     ${head("🏡", S.about.title)}
     <div class="about">
-      <div class="about-photo reveal"><img src="${esc(S.about.photo)}" alt=""></div>
+      <div class="about-photo reveal">${S.chatbot && S.chatbot.link && S.about.photo === S.chatbot.character
+        ? `<a class="chat-photo" href="${esc(S.chatbot.link)}" target="_blank" rel="noopener" title="${esc(S.chatbot.label)} 열기"><img src="${esc(S.about.photo)}" alt="${esc(S.chatbot.label)} 열기"><span class="chat-hint">💬 캐릭터를 누르면 ${esc(S.chatbot.label)}이 열려요</span></a>`
+        : `<img src="${esc(S.about.photo)}" alt="">`}</div>
       <div class="reveal">
         <h3>${esc(S.about.headline)}</h3>
         <p class="greet">${esc(S.about.greeting)}</p>
@@ -150,6 +152,18 @@ document.getElementById("footLinks").innerHTML = Object.entries(S.links)
   .filter(([k, u]) => u && k !== "waitlistText")
   .map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${linkNames[k] || k}</a>`)
   .join("");
+
+/* 오른쪽 아래 떠 있는 캐릭터 → 양육상담 챗봇 */
+if (S.chatbot && S.chatbot.link) {
+  const fab = document.createElement("a");
+  fab.className = "chat-fab";
+  fab.href = S.chatbot.link;
+  fab.target = "_blank";
+  fab.rel = "noopener";
+  fab.setAttribute("aria-label", `${S.chatbot.label} 열기`);
+  fab.innerHTML = `<span class="chat-bubble">💬 ${esc(S.chatbot.label)}</span><span class="chat-char"><img src="${esc(S.chatbot.character)}" alt=""></span>`;
+  document.body.appendChild(fab);
+}
 
 /* ---------- 움직임 ---------- */
 const header = document.getElementById("header");
