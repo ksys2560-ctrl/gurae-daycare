@@ -64,13 +64,11 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .chat-fab:hover .chat-char { animation: none; transform: scale(1.08); }
 @keyframes chatBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 @media (max-width: 600px) {
-  /* 휴대폰: 글을 덜 가리도록 오른쪽 아래에 작고 단정하게 */
-  .chat-fab { right: 10px; top: auto; bottom: 12px; transform: none; gap: 4px; }
+  /* 휴대폰: 오른쪽 가운데에 작고 단정하게 (컴퓨터와 같은 자리) */
+  .chat-fab { right: 10px; gap: 4px; }
   .chat-char { width: 88px; height: 60px; border-radius: 22px; border-width: 2px; }
   .chat-fab.fallback .chat-char { width: 56px; height: 56px; }
   .chat-bubble { font-size: 12px; padding: 4px 10px; }
-  /* 맨 아래 글이 챗봇 단추에 가리지 않도록 여유 */
-  footer { padding-bottom: 110px; }
   /* 입학 안내 카드: 휴대폰에서 여백 줄이고, 이름표를 글 위로 */
   .e-card { padding: 22px 18px; }
   .e-recruit h4 { font-size: 22px; }
@@ -81,6 +79,7 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 @media (prefers-reduced-motion: reduce) { .chat-char { animation: none; } }
 .brand-name { line-height: 1.2; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.35); transition: color .3s; }
 .brand-name small { display: block; font-size: 12px; opacity: .9; }
+.brand-name small:empty { display: none; }
 .brand-name b { font-family: "Jua", sans-serif; font-weight: 400; font-size: 21px; }
 header.solid .brand-name { color: var(--main); text-shadow: none; }
 nav ul { display: flex; gap: 6px; list-style: none; }
@@ -169,6 +168,27 @@ section.block:nth-of-type(even) .r-dot { border-color: var(--bg-alt); }
 
 /* 오늘의 풍경 */
 .stories { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+/* 오늘의 풍경: 반별 폴더 (컴퓨터 3칸, 휴대폰 2칸) */
+.class-folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 22px; }
+.folder { position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 0 14px; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; transition: transform .25s; }
+.folder:hover { transform: translateY(-6px); }
+/* 반마다 색: 폴더에 --c 로 반 색이 들어옴 */
+.folder-tab { align-self: flex-start; width: 42%; height: 18px; margin-left: 8%; background: var(--c); border-radius: 12px 12px 0 0; }
+.folder-body { width: 100%; aspect-ratio: 4 / 3; border-radius: 4px 22px 22px 22px; overflow: hidden; background: var(--c); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 45%, #fff), var(--c)); display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+.folder-age { margin-top: 4px; padding: 2px 12px; border-radius: 99px; font-size: 14px; font-weight: 700; color: var(--text); background: #fff; background: color-mix(in srgb, var(--c) 28%, #fff); border: 1.5px solid var(--c); }
+.folder-body img { width: 100%; height: 100%; object-fit: cover; }
+.folder-icon { font-size: 64px; filter: drop-shadow(0 3px 4px rgba(0,0,0,.12)); }
+.folder-name { margin-top: 12px; font-family: "Jua", sans-serif; font-size: 24px; }
+.folder-count { margin-top: 6px; font-size: 14.5px; color: var(--text-soft); }
+.folder.shake .folder-body { animation: folderShake .4s; }
+@keyframes folderShake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-3px); } }
+@media (max-width: 600px) {
+  .class-folders { grid-template-columns: repeat(2, 1fr); gap: 20px 14px; }
+  .folder-icon { font-size: 48px; }
+  .folder-name { font-size: 20px; margin-top: 8px; }
+  .folder-count { font-size: 13px; }
+  .folder-age { font-size: 12.5px; padding: 2px 10px; }
+}
 .story { background: var(--card); border-radius: 24px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.06); cursor: zoom-in; }
 .story img { width: 100%; aspect-ratio: 4/3; object-fit: cover; transition: transform .5s; }
 .story:hover img { transform: scale(1.05); }

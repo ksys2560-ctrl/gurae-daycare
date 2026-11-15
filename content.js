@@ -16,7 +16,7 @@
 const SITE = {
   /* ---------- 기본 정보 ---------- */
   name: "시립구래어린이집",             // 어린이집 이름 (맨 위 왼쪽, 브라우저 탭 제목)
-  subName: "국공립",                    // 이름 위 작은 글자 (없으면 "" 로 비워두기)
+  subName: "",                  // 이름 위 작은 글자 (없으면 "" 로 비워두기)
   logo: "images/character.webp",                           // 로고 그림 (예: "images/logo.png"), 없으면 "" → 🌱 표시
   phone: "031-982-9915",
   address: "경기도 김포시 김포한강4로 564",   // 지도는 이 주소로 찾습니다
@@ -112,12 +112,19 @@ const SITE = {
   story: {
     show: true,
     title: "오늘의 풍경",
-    // 사진을 더 넣고 싶으면 { photo: "...", text: "..." }, 한 줄을 복사해 붙이세요
-    items: [
-      { photo: "images/story-butterfly.webp", text: "애벌레가 나비가 되는 과정을 관찰해요" },
-      { photo: "images/story-sportsday.webp", text: "추(秋)억 만들기 한마음 가족운동회" },
-      { photo: "images/story-council.webp", text: "김포시의회에 다녀왔어요" },
+    text: "우리 반을 눌러 아이들의 하루를 만나 보세요.",
+    // 반별 사진 폴더. 사진은 images/classes/반폴더/ 에 넣고, photos 에 한 줄씩 적습니다.
+    // 예) photos: [ { photo: "images/classes/sansae/1.jpg", text: "숲에서 도토리 줍기" }, ],
+    // age = 반 이름 아래 나이, color = 폴더 색
+    classes: [
+      { name: "산새반", age: "0세", icon: "🐦", color: "#f48fa8", folder: "sansae", photos: [] },
+      { name: "풀잎반", age: "1세", icon: "🌿", color: "#7cc36a", folder: "pullip", photos: [] },
+      { name: "구름반", age: "1세", icon: "☁️", color: "#7fbde8", folder: "gureum", photos: [] },
+      { name: "나무반", age: "2세", icon: "🌳", color: "#d9a066", folder: "namu", photos: [] },
+      { name: "하늘반", age: "3세", icon: "🌈", color: "#9b93e6", folder: "haneul", photos: [] },
+      { name: "햇살반", age: "4~5세 · 장애통합반", icon: "☀️", color: "#f5c13f", folder: "haessal", photos: [] },
     ],
+    emptyText: "사진을 준비하고 있어요",
     moreText: "더 많은 이야기 보기",
     moreLink: "https://www.instagram.com/yes__gurae/",   // 블로그·인스타 주소 (예: "https://blog.naver.com/..."), 없으면 "" → 단추 숨김
   },

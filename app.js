@@ -80,9 +80,19 @@ if (S.routine.show) sections.push({
 if (S.story.show) sections.push({
   id: "story", menu: S.story.title,
   html: `<section class="block" id="story"><div class="wrap">
-    ${head("📷", S.story.title)}
-    <div class="stories">${S.story.items.map((it) => `<div class="story reveal" data-src="${esc(it.photo)}" data-text="${esc(it.text)}">
-      <img src="${esc(it.photo)}" alt="${esc(it.text)}"><p>${esc(it.text)}</p></div>`).join("")}</div>
+    ${head("📷", S.story.title, S.story.text)}
+    <div class="class-folders">${(S.story.classes || []).map((c, i) => {
+      const n = c.photos.length, cover = n ? c.photos[0].photo : "";
+      return `<button type="button" class="folder reveal${n ? "" : " empty"}" data-i="${i}" style="--c:${esc(c.color || "#f2a65a")}">
+        <span class="folder-tab"></span>
+        <span class="folder-body">
+          ${cover ? `<img src="${esc(cover)}" alt="">` : `<span class="folder-icon">${esc(c.icon)}</span>`}
+        </span>
+        <span class="folder-name">${esc(c.name)}</span>
+        ${c.age ? `<span class="folder-age">${esc(c.age)}</span>` : ""}
+        <span class="folder-count">${n ? `📷 사진 ${n}장` : esc(S.story.emptyText)}</span>
+      </button>`;
+    }).join("")}</div>
     ${S.story.moreLink ? `<div class="more"><a class="btn btn-main" href="${esc(S.story.moreLink)}" target="_blank" rel="noopener">${esc(S.story.moreText)} →</a></div>` : ""}
   </div></section>`,
 });
@@ -209,16 +219,26 @@ document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
 /* 사진 크게 보기 — 사진이 여러 장이면 ‹ › 단추, 키보드 ← →, 휴대폰 밀기로 넘겨 봄 */
 const lb = document.getElementById("lightbox");
-let lbList = [], lbIdx = 0, lbText = "";
+let lbList = [], lbIdx = 0;   // [{ src, text }]
 const lbShow = () => {
-  lb.querySelector("img").src = lbList[lbIdx];
-  lb.querySelector("p").textContent = lbText + (lbList.length > 1 ? `  (${lbIdx + 1} / ${lbList.length})` : "");
+  const it = lbList[lbIdx];
+  lb.querySelector("img").src = it.src;
+  lb.querySelector("p").textContent = it.text + (lbList.length > 1 ? `  (${lbIdx + 1} / ${lbList.length})` : "");
   lb.classList.toggle("multi", lbList.length > 1);
 };
-const lbOpen = (list, text) => { lbList = list; lbIdx = 0; lbText = text; lbShow(); lb.classList.add("open"); };
+const lbOpenItems = (items) => { lbList = items; lbIdx = 0; lbShow(); lb.classList.add("open"); };
+const lbOpen = (srcs, text) => lbOpenItems(srcs.map((src) => ({ src, text })));
 const lbMove = (d) => { if (lbList.length > 1) { lbIdx = (lbIdx + d + lbList.length) % lbList.length; lbShow(); } };
 
-document.querySelectorAll(".story").forEach((el) => el.addEventListener("click", () => lbOpen([el.dataset.src], el.dataset.text)));
+// 반 폴더를 누르면 그 반 사진을 넘겨 보며 봄 (사진이 없으면 잠깐 안내)
+document.querySelectorAll(".folder").forEach((el) => el.addEventListener("click", () => {
+  const c = S.story.classes[el.dataset.i];
+  if (!c.photos.length) {
+    el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake");
+    return;
+  }
+  lbOpenItems(c.photos.map((p) => ({ src: p.photo, text: `${c.icon} ${c.name}` + (p.text ? ` · ${p.text}` : "") })));
+}));
 document.querySelectorAll(".prog-img.zoomable").forEach((el) => el.addEventListener("click", () => {
   const p = S.edu.programs[el.dataset.i];
   lbOpen([p.photo, ...(p.more || [])], `${p.icon} ${p.name}`);
